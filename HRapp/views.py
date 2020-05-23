@@ -57,7 +57,7 @@ class EmployeeDetailsUpload(APIView):
 					if column[0][0] == "#":
 						continue
 					elif csv_invalid(column):
-						raise BadData('Row Not Found!')
+						raise BadData('One or more of your rows may have been formatted wrongly!')
 					else:
 						obj, created = Employee.objects.update_or_create(
 							employee_id = column[0],
