@@ -8,6 +8,9 @@ from rest_framework import status, generics
 from .models import Employee
 from .validators import csv_content_validator
 from django.db import transaction
+
+class BadData(Exception):
+    pass
 # Create your views here.
 
 def employee_upload(request):
@@ -31,7 +34,7 @@ class EmployeeDetailsUpload(APIView):
 	'''assumption:
 		employee_ids assigned smartly. HR collaborates to assign
 	'''
-	@transaction.atomic
+
 	def post(self,request,format=None):
 		print('--------------------------')
 		print(request.headers)
@@ -45,21 +48,23 @@ class EmployeeDetailsUpload(APIView):
 		data_set = csv_file.read().decode('utf-8-sig')
 		io_string = io.StringIO(data_set)
 		i = 0
-
-		for column in csv.reader(io_string, delimiter=","):
-			if i == 0:
-				if column != ['id', 'login', 'name', 'salary']:
-					print("THERE")
-					return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-				i = i+1
-			else:
-				obj, created = Employee.objects.update_or_create(
-					employee_id = column[0],
-					login = column[1],
-					name = column[2],
-					salary = column[3]
-				)
-
-		return Response(status=status.HTTP_200_OK)
+		with transaction.atomic():
+			for column in csv.reader(io_string, delimiter=","):
+				if i == 0:
+					if column != ['id', 'login', 'name', 'salary']:
+						return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+					i = i+1
+				else:
+					if len(column[0]) <=0 or len(column[1]) <=0 or len(column[2]) <=0 or len(column[3]) <=0:
+						raise BadData('Row not found!')
+						#return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+					else:
+						obj, created = Employee.objects.update_or_create(
+							employee_id = column[0],
+							login = column[1],
+							name = column[2],
+							salary = column[3]
+						)
+			return Response(status=status.HTTP_200_OK)
 
 		#has_errors = csv_content_validator(data_set)
