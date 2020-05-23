@@ -1,12 +1,15 @@
 import csv, io
 from django.shortcuts import render
 from django.contrib import messages
+from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
 from rest_framework import status, generics
-from .models import Employee
+from .models import *
 from .validators import csv_invalid
+from .serializers import *
 from django.db import transaction
 
 class BadData(Exception):
@@ -67,3 +70,7 @@ class EmployeeDetailsUpload(APIView):
 							'salary': column[3]
 						})
 			return Response(status=status.HTTP_200_OK)
+
+class EmployeeRecordsView(generics.ListAPIView):
+	queryset = Employee.objects.all()
+	serializer_class = EmployeeRecordsSerializer
