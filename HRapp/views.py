@@ -6,7 +6,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status, generics
 from .models import Employee
-from .validators import csv_content_validator
+from .validators import csv_invalid
 from django.db import transaction
 
 class BadData(Exception):
@@ -36,28 +36,24 @@ class EmployeeDetailsUpload(APIView):
 	'''
 
 	def post(self,request,format=None):
-		print('--------------------------')
-		print(request.headers)
-		print(request.FILES)
-		print('--------------------------')
 		csv_file = request.FILES['file']
 		if not csv_file.name.endswith(".csv"):
 			print("HERE")
 			return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-		#get all IDs and lock first
+
 		data_set = csv_file.read().decode('utf-8-sig')
 		io_string = io.StringIO(data_set)
 		i = 0
+
 		with transaction.atomic():
 			for column in csv.reader(io_string, delimiter=","):
 				if i == 0:
 					if column != ['id', 'login', 'name', 'salary']:
-						return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+						raise BadData('Header Not Found!')
 					i = i+1
 				else:
-					if len(column[0]) <=0 or len(column[1]) <=0 or len(column[2]) <=0 or len(column[3]) <=0:
-						raise BadData('Row not found!')
-						#return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+					if csv_invalid(column):
+						raise BadData('Row Not Found!')
 					else:
 						obj, created = Employee.objects.update_or_create(
 							employee_id = column[0],
