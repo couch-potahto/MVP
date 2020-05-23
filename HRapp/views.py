@@ -43,24 +43,27 @@ class EmployeeDetailsUpload(APIView):
 
 		data_set = csv_file.read().decode('utf-8-sig')
 		io_string = io.StringIO(data_set)
+
 		i = 0
 
 		with transaction.atomic():
 			for column in csv.reader(io_string, delimiter=","):
+				print(column)
 				if i == 0:
 					if column != ['id', 'login', 'name', 'salary']:
 						raise BadData('Header Not Found!')
 					i = i+1
 				else:
-					if csv_invalid(column):
+					if column[0][0] == "#":
+						continue
+					elif csv_invalid(column):
 						raise BadData('Row Not Found!')
 					else:
 						obj, created = Employee.objects.update_or_create(
 							employee_id = column[0],
-							login = column[1],
-							name = column[2],
-							salary = column[3]
-						)
+							defaults={
+							'login': column[1],
+							'name': column[2],
+							'salary': column[3]
+						})
 			return Response(status=status.HTTP_200_OK)
-
-		#has_errors = csv_content_validator(data_set)

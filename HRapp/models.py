@@ -2,6 +2,8 @@ from django.db import models
 from decimal import *
 from django.core.validators import MinValueValidator
 # Create your models here.
+
+#employee id will never change
 class Employee(models.Model):
 	employee_id = models.CharField(max_length=200, unique=True, blank=False)
 	login = models.CharField(max_length=200, unique=True, blank=False)

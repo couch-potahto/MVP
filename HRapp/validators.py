@@ -9,7 +9,9 @@ VALIDATION_ERROR_MSG = {
 
 
 def csv_invalid(csv_array):
-    if len(csv_array[0]) <= 0 or len(csv_array[1]) <= 0 or len(csv_array[2]) <= 0 or len(csv_array[3]) <= 0:
+    if len(csv_array) > 4:
+        return True
+    elif len(csv_array[0]) <= 0 or len(csv_array[1]) <= 0 or len(csv_array[2]) <= 0 or len(csv_array[3]) <= 0:
         return True
     elif float(csv_array[3]) < 0:
         return True
