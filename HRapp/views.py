@@ -1,12 +1,14 @@
 import csv, io
 from django.shortcuts import render
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from rest_framework.decorators import api_view
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
-from rest_framework import status, generics
+from rest_framework import status, generics, filters
 from .models import *
 from .validators import csv_invalid
 from .serializers import *
@@ -71,6 +73,9 @@ class EmployeeDetailsUpload(APIView):
 						})
 			return Response(status=status.HTTP_200_OK)
 
-class EmployeeRecordsView(generics.ListAPIView):
+class PaginatedEmployeeRecordsView(generics.ListAPIView):
 	queryset = Employee.objects.all()
-	serializer_class = EmployeeRecordsSerializer
+	serializer_class = EmployeeSerializer
+	pagination_class = StandardPagesPagination
+	filter_backends = [filters.OrderingFilter]
+	ordering_fields = '__all__'

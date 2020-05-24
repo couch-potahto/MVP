@@ -1,4 +1,5 @@
-from rest_framework import serializers
+from rest_framework import pagination, serializers
+from django.core.paginator import Paginator
 from .models import *
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -7,5 +8,5 @@ class EmployeeSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 
-class EmployeeRecordsSerializer(serializers.ModelSerializer):
-	employees = EmployeeSerializer(many=True)
+class StandardPagesPagination(pagination.PageNumberPagination):  
+    page_size = 30

@@ -3,5 +3,6 @@ from .views import *
 
 urlpatterns = [
     path('users/upload', EmployeeDetailsUpload.as_view()),
-    path('users/upload_test', employee_upload, name="upload_details")
+    path('users/upload_test', employee_upload, name="upload_details"),
+    path('users', PaginatedEmployeeRecordsView.as_view(), name="employee_list")
 ]
