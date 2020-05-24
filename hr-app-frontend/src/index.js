@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-//import cartReducer from './components/reducers/cartReducer';
+import {getEmployee} from './components/actions/employee'
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './components/reducers/index';
@@ -12,7 +12,7 @@ import thunk from 'redux-thunk';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
-//store.dispatch(fetchAllEquipment());
+store.dispatch(getEmployee());
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

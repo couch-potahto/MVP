@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 class App extends Component {
   render(){
-    console.log(this.props.loggedIn)
 
     return (
        <BrowserRouter>
@@ -13,7 +12,7 @@ class App extends Component {
 
                 <Switch>
                     <Route exact path="/" component={Dashboard}/>
-                    
+
                   </Switch>
 
 

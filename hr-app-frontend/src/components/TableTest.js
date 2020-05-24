@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getEmployee } from './actions/employee';
+import { changePage, getEmployee} from './actions/employee';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,31 +18,22 @@ import Title from './Title';
 import axios from 'axios'
 
 class TableTest extends Component{
-
   state = {
-    allEmployees: [],
-    previous: null,
-    next: null,
+   allEmployees: [],
+   previous: null,
+   next: null,
+   count: 0
+ }
 
-  }
+  handleChangePage = (event, page)=>{
+    this.props.changePage(page)
 
-  componentDidMount(){
-    axios.get('http://localhost:8000/users/test?offset=0&limit=30&maxSalary=4000&minSalary=0&sort=name')
-      .then(res=>{
-        const allEmployees=res.data;
-        this.setState({
-          allEmployees: allEmployees.results,
-          previous: allEmployees.previous,
-          next: allEmployees.next
-        })
-        console.log(this.state)
-      })
   }
 
 
 render(){
   return(
-    <React.Fragment>
+
     <TableContainer component={Paper}>
     <Toolbar>
       <Typography>
@@ -60,7 +51,7 @@ render(){
         </TableRow>
       </TableHead>
       <TableBody>
-        {this.state.allEmployees.map(employee=> (
+        {this.props.allEmployees.map(employee=> (
           <TableRow key={employee.id}>
             <TableCell>{employee.id}</TableCell>
             <TableCell>{employee.name}</TableCell>
@@ -76,26 +67,33 @@ render(){
         alignItems="center"
         justifyContent="center"
       >
-        <Pagination count={10} size="large" />
+        <Pagination
+        count={this.props.count}
+        size="large"
+        onChange={(event, page)=>{this.handleChangePage(event, page)}}
+      />
       </Box>
       </TableContainer>
 
-
-      </React.Fragment>
   );
 }
 };
 
 const mapStateToProps = (state) =>{
-  console.log(state.employeeReducer)
+  console.log(state)
 	return {
-		items: state.employeeReducer.allEmployee,
+		allEmployees: state.employeeReducer.allEmployees,
+    count: state.employeeReducer.count,
+    previous: state.employeeReducer.previous,
+    next: state.employeeReducer.next
 	}
 }
 
 const mapDispatchToProps= (dispatch)=>{
+  return{
+    changePage: (page)=>{dispatch(changePage(page))},
 
-
+  }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(TableTest)
+export default connect(mapStateToProps, mapDispatchToProps)(TableTest)
