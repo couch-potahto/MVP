@@ -1,8 +1,9 @@
 import csv, io
 from django.shortcuts import render
 from django.contrib import messages
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from rest_framework.settings import api_settings
 from rest_framework.decorators import api_view
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
@@ -12,6 +13,7 @@ from rest_framework import status, generics, filters
 from .models import *
 from .validators import csv_invalid
 from .serializers import *
+from .custom_mixins import *
 from django.db import transaction
 
 class BadData(Exception):
@@ -79,3 +81,18 @@ class PaginatedEmployeeRecordsView(generics.ListAPIView):
 	pagination_class = StandardPagesPagination
 	filter_backends = [filters.OrderingFilter]
 	ordering_fields = '__all__'
+
+class TestPaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
+    #queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+
+    def get(self, request):
+        params = request.query_params
+        print(params)
+        queryset = Employee.objects.all()
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
