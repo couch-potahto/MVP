@@ -13,6 +13,9 @@ import Pagination from '@material-ui/lab/Pagination';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar'
+import Grid from '@material-ui/core/Grid';
+import SortSelect from './SortSelect'
+import Dialog from './Dialog'
 import { Box } from '@material-ui/core'
 import Title from './Title';
 import axios from 'axios'
@@ -26,7 +29,8 @@ class TableTest extends Component{
  }
 
   handleChangePage = (event, page)=>{
-    this.props.changePage(page)
+    console.log(this.props)
+    this.props.changePage(page, this.props.minSalary, this.props.maxSalary, this.props.sort)
 
   }
 
@@ -39,6 +43,9 @@ render(){
       <Typography>
         Employees
       </Typography>
+      <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+         <Dialog />
+      </Grid>
     </Toolbar>
     <Table title ="Employees">
       <TableHead>
@@ -53,7 +60,7 @@ render(){
       <TableBody>
         {this.props.allEmployees.map(employee=> (
           <TableRow key={employee.id}>
-            <TableCell>{employee.id}</TableCell>
+            <TableCell>{employee.employee_id}</TableCell>
             <TableCell>{employee.name}</TableCell>
             <TableCell>{employee.login}</TableCell>
             <TableCell>{employee.salary}</TableCell>
@@ -85,13 +92,17 @@ const mapStateToProps = (state) =>{
 		allEmployees: state.employeeReducer.allEmployees,
     count: state.employeeReducer.count,
     previous: state.employeeReducer.previous,
-    next: state.employeeReducer.next
+    next: state.employeeReducer.next,
+    minSalary: state.employeeReducer.minSalary,
+    maxSalary: state.employeeReducer.maxSalary,
+    sort: state.employeeReducer.sort
+
 	}
 }
 
 const mapDispatchToProps= (dispatch)=>{
   return{
-    changePage: (page)=>{dispatch(changePage(page))},
+    changePage: (page, min, max, q)=>{dispatch(changePage(page, min, max, q))},
 
   }
 }
