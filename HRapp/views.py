@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from rest_framework.settings import api_settings
 from rest_framework.decorators import api_view
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.exceptions import ValidationError
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework import status, generics, filters
 from .models import *
-from .validators import csv_invalid
+from .validators import *
 from .serializers import *
 from .custom_mixins import *
 from django.db import transaction
@@ -88,9 +88,20 @@ class TestPaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
     pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
 
     def get(self, request):
+        resolve_id = {'id': 'employee_id', '-id': '-employee_id'}
         params = request.query_params
         print(params)
-        queryset = Employee.objects.all()
+        if query_request_invalid(params):
+            raise ValidationError()
+        try:
+            if params['sort'] == 'id':
+                p = resolve_id[params['sort']]
+            else:
+                p = params['sort']
+
+            queryset = Employee.objects.all().filter(salary__gte=params['minSalary'], salary__lte=params['maxSalary']).order_by(p)
+        except:
+            raise ValidationError()
         page = self.paginate_queryset(queryset)
 
         if page is not None:
