@@ -7,9 +7,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableContainer from '@material-ui/core/TableContainer';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
+import Pagination from '@material-ui/lab/Pagination';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar'
+import { Box } from '@material-ui/core'
 import Title from './Title';
 import axios from 'axios'
 
@@ -48,7 +52,7 @@ render(){
     <Table title ="Employees">
       <TableHead>
         <TableRow>
-          <TableCell>ID</TableCell>
+          <TableCell component="th" scope="row">ID</TableCell>
           <TableCell>Name</TableCell>
           <TableCell>Login</TableCell>
           <TableCell>Salary</TableCell>
@@ -62,12 +66,21 @@ render(){
             <TableCell>{employee.name}</TableCell>
             <TableCell>{employee.login}</TableCell>
             <TableCell>{employee.salary}</TableCell>
-            <TableCell></TableCell>
+            <TableCell> LOL</TableCell>
           </TableRow>
         ))}
         </TableBody>
       </Table>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Pagination count={10} size="large" />
+      </Box>
       </TableContainer>
+
+
       </React.Fragment>
   );
 }
