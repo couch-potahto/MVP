@@ -17,7 +17,7 @@ from .custom_mixins import *
 from django.db import transaction
 
 class BadData(Exception):
-    pass
+	pass
 # Create your views here.
 
 def employee_upload(request):
@@ -43,7 +43,9 @@ class EmployeeDetailsUpload(APIView):
 	'''
 
 	def post(self,request,format=None):
+		print(request.FILES)
 		csv_file = request.FILES['file']
+
 		if not csv_file.name.endswith(".csv"):
 			print("HERE")
 			return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
@@ -83,27 +85,27 @@ class PaginatedEmployeeRecordsView(generics.ListAPIView):
 	ordering_fields = '__all__'
 
 class TestPaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
-    #queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
-    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+	#queryset = Employee.objects.all()
+	serializer_class = EmployeeSerializer
+	pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
 
-    def get(self, request):
-        resolve_id = {'id': 'employee_id', '-id': '-employee_id'}
-        params = request.query_params
-        print(params)
-        if query_request_invalid(params):
-            raise ValidationError()
-        try:
-            if params['sort'] == 'id':
-                p = resolve_id[params['sort']]
-            else:
-                p = params['sort']
+	def get(self, request):
+		resolve_id = {'id': 'employee_id', '-id': '-employee_id'}
+		params = request.query_params
+		print(params)
+		if query_request_invalid(params):
+			raise ValidationError()
+		try:
+			if params['sort'] == 'id':
+				p = resolve_id[params['sort']]
+			else:
+				p = params['sort']
 
-            queryset = Employee.objects.all().filter(salary__gte=params['minSalary'], salary__lte=params['maxSalary']).order_by(p)
-        except:
-            raise ValidationError()
-        page = self.paginate_queryset(queryset)
+			queryset = Employee.objects.all().filter(salary__gte=params['minSalary'], salary__lte=params['maxSalary']).order_by(p)
+		except:
+			raise ValidationError()
+		page = self.paginate_queryset(queryset)
 
-        if page is not None:
-            serializer = self.serializer_class(page, many=True)
-            return self.get_paginated_response(serializer.data)
+		if page is not None:
+			serializer = self.serializer_class(page, many=True)
+			return self.get_paginated_response(serializer.data)

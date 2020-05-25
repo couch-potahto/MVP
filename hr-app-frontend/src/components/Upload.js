@@ -26,24 +26,21 @@ class Upload extends Component {
 
       // Update the formData object
       formData.append(
-        "myFile",
+        "file",
         this.state.selectedFile,
-        this.state.selectedFile.name
+        //this.state.selectedFile.name
       );
-
+      console.log(formData)
       // Details of the uploaded file
       console.log(this.state.selectedFile);
 
       // Request made to the backend api
       // Send formData object
-      axios.post("http://localhost:8000/users/upload",
+      axios.post("http://localhost:8000/users/upload", formData,
        {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        data:{
-          'file': formData
-        }
       })
       .then(res=>{
         console.log(res)
