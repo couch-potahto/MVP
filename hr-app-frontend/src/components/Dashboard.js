@@ -86,7 +86,7 @@ function Dashboard(props) {
           </ListItem>
         ))}
         <ListItem>
-          <Upload />
+            <Upload />
         </ListItem>
       </List>
     </div>

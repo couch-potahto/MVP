@@ -18,27 +18,6 @@ from .custom_mixins import *
 from django.db import transaction, OperationalError, IntegrityError
 import time
 
-class BadData(Exception):
-	pass
-# Create your views here.
-
-def employee_upload(request):
-
-	template="upload.html"
-	data = Employee.objects.all()
-
-	prompt = {
-		'order:': 'Order of CSV should be xxx, yyy, zzz',
-		'employees': data
-	}
-	if request.method == "GET":
-		return render(request, template, prompt)
-	csv_file = request.FILES['lol']
-	print(request.headers)
-	print(request.FILES)
-	print(csv_file)
-
-
 class EmployeeDetailsUpload(APIView):
 	'''assumption:
 		employee_ids assigned smartly. HR collaborates to assign
@@ -57,7 +36,7 @@ class EmployeeDetailsUpload(APIView):
 		try:
 			with transaction.atomic():
 				for column in csv.reader(io_string, delimiter=","):
-					time.sleep(5)
+					#time.sleep(5)
 					print(column)
 					if i == 0:
 						if column != ['id', 'login', 'name', 'salary']:
@@ -77,7 +56,6 @@ class EmployeeDetailsUpload(APIView):
 								'salary': column[3]
 							})
 		except OperationalError:
-			print('LOL')
 			return Response(status=status.HTTP_503_SERVICE_UNAVAILABLE)
 		except IntegrityError:
 			return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
