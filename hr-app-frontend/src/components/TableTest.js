@@ -87,7 +87,7 @@ render(){
 }
 };
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
   console.log(state)
 	return {
 		allEmployees: state.employeeReducer.allEmployees,

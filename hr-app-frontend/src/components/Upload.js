@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
 import axios from 'axios';
-
-import React,{Component} from 'react';
+import { connect } from 'react-redux';
+import { showSuccessSnackbar, clearSnackBar } from './actions/snackbar'
 
 class Upload extends Component {
 
@@ -34,6 +35,7 @@ class Upload extends Component {
       })
       .then(res=>{
         console.log(res)
+        this.props.showSuccessSnackbar()
       })
       .catch(error=>{
         console.log(error)
@@ -81,4 +83,11 @@ class Upload extends Component {
     }
   }
 
-  export default Upload;
+const mapDispatchToProps = (dispatch) => {
+  return{
+    showSuccessSnackbar: () => {dispatch(showSuccessSnackbar('Upload Success'))},
+    clearSnackBar: () => {dispatch(clearSnackBar())}
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Upload);
