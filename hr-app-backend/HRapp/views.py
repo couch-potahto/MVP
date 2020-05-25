@@ -55,10 +55,8 @@ class EmployeeDetailsUpload(APIView):
 		i = 0
 		with transaction.atomic():
 			for column in csv.reader(io_string, delimiter=","):
-				print(column)
 				if i == 0:
 					if column != ['id', 'login', 'name', 'salary']:
-
 						raise SuspiciousOperation('Header Not Found!')
 					i = i+1
 				else:
