@@ -64,6 +64,7 @@ class EmployeeDetailsUpload(APIView):
 
 		return Response(status=status.HTTP_200_OK)
 
+
 class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 	serializer_class = EmployeeSerializer
 	pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
@@ -88,6 +89,26 @@ class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 		if page is not None:
 			serializer = self.serializer_class(page, many=True)
 			return self.get_paginated_response(serializer.data)
+
+class EmployeeDetailView(APIView):
+	def get_object(self, id):
+		return Employee.objects.get(employee_id=id)
+
+	def patch(self, request, id):
+		employee = self.get_object(id)
+		serializer = EmployeeSerializer(employee, data=request.data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(status=status.HTTP_204_NO_CONTENT, data=serializer.data)
+
+	def get(self, request, id):
+		try:
+			employee = self.get_object(id)
+		except Employee.DoesNotExist:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		serializer = EmployeeSerializer(employee)
+		return Response(serializer.data)
+
 
 def get_langauge(request):
 	return HttpResponse(request.LANGUAGE_CODE)
