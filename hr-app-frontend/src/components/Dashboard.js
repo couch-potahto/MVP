@@ -21,7 +21,6 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Profile from './Profile'
-import Employees from './Employees'
 import TableTest from './TableTest'
 import Upload from './Upload'
 

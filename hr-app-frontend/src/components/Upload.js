@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { showSuccessSnackbar, clearSnackBar } from './actions/snackbar'
+import { showSuccessSnackbar, showErrorSnackbar, clearSnackBar } from './actions/snackbar'
 
 class Upload extends Component {
 
@@ -34,11 +34,10 @@ class Upload extends Component {
         },
       })
       .then(res=>{
-        console.log(res)
         this.props.showSuccessSnackbar()
       })
       .catch(error=>{
-        console.log(error)
+        this.props.showErrorSnackbar("File Type/Content Invalid")
       });
     };
 
@@ -86,6 +85,7 @@ class Upload extends Component {
 const mapDispatchToProps = (dispatch) => {
   return{
     showSuccessSnackbar: () => {dispatch(showSuccessSnackbar('Upload Success'))},
+    showErrorSnackbar: (error) => {dispatch(showErrorSnackbar(error))},
     clearSnackBar: () => {dispatch(clearSnackBar())}
   }
 }

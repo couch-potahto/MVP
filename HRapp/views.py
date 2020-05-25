@@ -10,6 +10,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework import status, generics, filters
+from django.core.exceptions import SuspiciousOperation
 from .models import *
 from .validators import *
 from .serializers import *
@@ -60,13 +61,15 @@ class EmployeeDetailsUpload(APIView):
 				print(column)
 				if i == 0:
 					if column != ['id', 'login', 'name', 'salary']:
-						raise BadData('Header Not Found!')
+						#raise BadData('Header Not Found!')
+						raise SuspiciousOperation('Header Not Found!')
 					i = i+1
 				else:
 					if column[0][0] == "#":
 						continue
 					elif csv_invalid(column):
-						raise BadData('One or more of your rows may have been formatted wrongly!')
+						#raise BadData('One or more of your rows may have been formatted wrongly!')
+						raise SuspiciousOperation('One or more of your rows may have been formatted wrongly!')
 					else:
 						obj, created = Employee.objects.update_or_create(
 							employee_id = column[0],

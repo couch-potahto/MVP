@@ -1,4 +1,4 @@
-import { SNACKBAR_SUCCESS, SNACKBAR_CLEAR } from '../actions/types';
+import { SNACKBAR_SUCCESS, SNACKBAR_CLEAR, SNACKBAR_ERROR } from '../actions/types';
 
 const initState = {
   successSnackBarOpen: false,
@@ -18,6 +18,13 @@ const snackbarReducer=(state=initState, action)=>{
         state,
         successSnackBarOpen: true,
         successSnackBarMessage: action.message
+      };
+
+    case SNACKBAR_ERROR:
+      return{
+        state,
+        errorSnackBarOpen: true,
+        errorSnackBarMessage: action.message
       };
 
     case SNACKBAR_CLEAR:
