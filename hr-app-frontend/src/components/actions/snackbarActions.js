@@ -1,4 +1,4 @@
-import { SNACKBAR_SUCCESS, SNACKBAR_CLEAR, SNACKBAR_ERROR } from '../actions/types';
+import { SNACKBAR_SUCCESS, SNACKBAR_CLEAR, SNACKBAR_ERROR, SNACKBAR_WARNING } from '../actions/types';
 
 export const showSuccessSnackbar = (message) => {
   return dispatch => {
@@ -13,6 +13,15 @@ export const showErrorSnackbar = (message) => {
   return dispatch => {
     dispatch({
       type: SNACKBAR_ERROR,
+      message: message
+    });
+  };
+};
+
+export const showWarningSnackbar = (message) => {
+  return dispatch => {
+    dispatch({
+      type: SNACKBAR_WARNING,
       message: message
     });
   };

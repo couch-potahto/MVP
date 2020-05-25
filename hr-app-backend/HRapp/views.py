@@ -16,6 +16,7 @@ from .validators import *
 from .serializers import *
 from .custom_mixins import *
 from django.db import transaction
+import time
 
 class BadData(Exception):
 	pass
@@ -55,6 +56,8 @@ class EmployeeDetailsUpload(APIView):
 		i = 0
 		with transaction.atomic():
 			for column in csv.reader(io_string, delimiter=","):
+				time.sleep(5)
+				print(column)
 				if i == 0:
 					if column != ['id', 'login', 'name', 'salary']:
 						raise SuspiciousOperation('Header Not Found!')

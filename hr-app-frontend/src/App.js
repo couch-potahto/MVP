@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import Dashboard from './components/Dashboard'
 import SuccessSnackBar from './components/SuccessSnackBar'
 import ErrorSnackBar from './components/ErrorSnackBar'
+import WarningSnackBar from './components/WarningSnackBar'
 import { connect } from 'react-redux';
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
             <div className="App">
               <SuccessSnackBar />
               <ErrorSnackBar />
+              <WarningSnackBar />
                 <Switch>
                     <Route exact path="/" component={Dashboard}/>
 

@@ -1,9 +1,10 @@
-import { SNACKBAR_SUCCESS, SNACKBAR_CLEAR, SNACKBAR_ERROR } from '../actions/types';
+import { SNACKBAR_SUCCESS, SNACKBAR_CLEAR, SNACKBAR_ERROR, SNACKBAR_WARNING } from '../actions/types';
 
 const initState = {
   successSnackBarOpen: false,
   errorSnackBarOpen: false,
-  error_type: null,
+  warningSnackBarOpen: false,
+  warningSnackBarMessage: null,
   successSnackBarMessage: null,
   errorSnackBarMessage: null
 }
@@ -15,16 +16,24 @@ const snackbarReducer=(state=initState, action)=>{
     case SNACKBAR_SUCCESS:
       console.log(action)
       return {
-        state,
+        ...state,
         successSnackBarOpen: true,
         successSnackBarMessage: action.message
       };
 
     case SNACKBAR_ERROR:
       return{
-        state,
+        ...state,
         errorSnackBarOpen: true,
         errorSnackBarMessage: action.message
+      };
+
+    case SNACKBAR_WARNING:
+      console.log('LOLOLOLOLOOL')
+      return{
+        ...state,
+        warningSnackBarOpen: true,
+        warningSnackBarMessage: action.message
       };
 
     case SNACKBAR_CLEAR:
