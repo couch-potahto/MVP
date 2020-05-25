@@ -1,13 +1,3 @@
-import csv, io
-
-VALIDATION_ERROR_MSG = {
-    "WRONG HEADER": "WRONG HEADER",
-    "MISSING FIELD": "MISSING FIELD AT ROW ",
-    "ID REPEATED": "ID REPEATED AT ROW ",
-    "LOGIN REPEATED": "LOGIN REPEATED AT ROW "
-}
-
-
 def csv_invalid(csv_array):
     if len(csv_array) > 4:
         return True
@@ -23,6 +13,8 @@ def query_request_invalid(query_d):
         return True
     if 'minSalary' not in query_d or 'maxSalary' not in query_d or 'offset' not in query_d or 'limit' not in query_d or 'sort' not in query_d:
         return True
+    if float(query_d['maxSalary']) < float(query_d['minSalary']):
+        return True
     if query_d['sort'] not in valid_sort_by:
-        return True 
+        return True
     return False

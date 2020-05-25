@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { changePage, getEmployee} from './actions/employee';
+import { changePage, getEmployee} from './actions/employeeActions';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,7 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar'
 import Grid from '@material-ui/core/Grid';
-import SortSelect from './SortSelect'
 import Dialog from './Dialog'
 import { Box } from '@material-ui/core'
 import Title from './Title';
@@ -32,7 +31,6 @@ class TableTest extends Component{
   handleChangePage = (event, page)=>{
     console.log(this.props)
     this.props.changePage(page, this.props.minSalary, this.props.maxSalary, this.props.sort)
-
   }
 
 
@@ -101,10 +99,9 @@ const mapStateToProps = (state) => {
 	}
 }
 
-const mapDispatchToProps= (dispatch)=>{
+const mapDispatchToProps = (dispatch) => {
   return{
     changePage: (page, min, max, q)=>{dispatch(changePage(page, min, max, q))},
-
   }
 }
 

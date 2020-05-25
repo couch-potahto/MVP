@@ -1,27 +1,22 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { showSuccessSnackbar, showErrorSnackbar, clearSnackBar } from './actions/snackbar'
+import { showSuccessSnackbar, showErrorSnackbar, clearSnackBar } from './actions/snackbarActions'
 
 class Upload extends Component {
 
     state = {
-      // Initially, no file is selected
       selectedFile: null
     };
 
     // On file select (from the pop up)
     onFileChange = event => {
-      // Update the state
       this.setState({ selectedFile: event.target.files[0] });
     };
 
     // On file upload (click the upload button)
     onFileUpload = () => {
-      // Create an object of formData
       const formData = new FormData();
-
-      // Update the formData object
       formData.append(
         "file",
         this.state.selectedFile,
@@ -37,6 +32,7 @@ class Upload extends Component {
         this.props.showSuccessSnackbar()
       })
       .catch(error=>{
+        console.log(error.response.status)
         this.props.showErrorSnackbar("File Type/Content Invalid")
       });
     };
@@ -67,7 +63,6 @@ class Upload extends Component {
     };
 
     render() {
-
       return (
         <div>
             <div>

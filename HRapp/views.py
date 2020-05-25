@@ -44,31 +44,27 @@ class EmployeeDetailsUpload(APIView):
 	'''
 
 	def post(self,request,format=None):
-		print(request.FILES)
 		csv_file = request.FILES['file']
 
 		if not csv_file.name.endswith(".csv"):
-			print("HERE")
 			return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 		data_set = csv_file.read().decode('utf-8-sig')
 		io_string = io.StringIO(data_set)
 
 		i = 0
-
 		with transaction.atomic():
 			for column in csv.reader(io_string, delimiter=","):
 				print(column)
 				if i == 0:
 					if column != ['id', 'login', 'name', 'salary']:
-						#raise BadData('Header Not Found!')
+
 						raise SuspiciousOperation('Header Not Found!')
 					i = i+1
 				else:
 					if column[0][0] == "#":
 						continue
 					elif csv_invalid(column):
-						#raise BadData('One or more of your rows may have been formatted wrongly!')
 						raise SuspiciousOperation('One or more of your rows may have been formatted wrongly!')
 					else:
 						obj, created = Employee.objects.update_or_create(
@@ -80,15 +76,7 @@ class EmployeeDetailsUpload(APIView):
 						})
 			return Response(status=status.HTTP_200_OK)
 
-class PaginatedEmployeeRecordsView(generics.ListAPIView):
-	queryset = Employee.objects.all()
-	serializer_class = EmployeeSerializer
-	pagination_class = StandardPagesPagination
-	filter_backends = [filters.OrderingFilter]
-	ordering_fields = '__all__'
-
-class TestPaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
-	#queryset = Employee.objects.all()
+class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 	serializer_class = EmployeeSerializer
 	pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
 

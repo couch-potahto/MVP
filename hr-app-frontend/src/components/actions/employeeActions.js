@@ -1,24 +1,14 @@
 import axios from 'axios';
 import { CHANGE_PAGE, GET_EMPLOYEE, QUERY_PAGE, SUCCESS_QUERY } from './types';
+import { showSuccessSnackbar, showErrorSnackbar, clearSnackBar } from './snackbarActions'
 
-const apiUrl = 'http://localhost:8000/users/test?limit=30'
+const apiUrl = 'http://localhost:8000/users?limit=30'
 const offset = "&offset="
 const maxSalary = "&maxSalary="
 const minSalary = "&minSalary="
 const sort = "&sort="
-/*
-export const getEmployee = () => async dispatch => {
-  console.log('LOL')
-  const res = await axios.get(apiUrl + offset + 0 + maxSalary + 4000 + minSalary + 0 + sort + "name");
-  dispatch({
-    type: GET_EMPLOYEE,
-    payload: res.data
-  })
-};
-*/
 
 export const getEmployee = () =>{
-  console.log('LOL')
   return dispatch=>{
     return axios.get(apiUrl + offset + 0 + maxSalary + 9999999999999 + minSalary + 0 + sort + "name")
       .then(res=>{
@@ -29,7 +19,7 @@ export const getEmployee = () =>{
         })
       })
       .catch(error=>{
-        throw(error);
+        dispatch(showErrorSnackbar('Server Unavailable'))
       });
   };
 };
@@ -39,7 +29,6 @@ export const changePage = (page, min, max, q) =>{
   //page * 30
   console.log(page)
   return(dispatch)=>{
-
     return axios.get(apiUrl + offset + ((page-1)*30) + maxSalary + max + minSalary + min + sort + q)
       .then(res=>{
         console.log(res)
@@ -49,7 +38,7 @@ export const changePage = (page, min, max, q) =>{
         })
       })
       .catch(error=>{
-        throw(error);
+        dispatch(showErrorSnackbar('Page Invalid'))
       });
   };
 };
@@ -63,7 +52,6 @@ export const applyQueryParams = (val) =>{
   return(dispatch)=>{
     return axios.get(apiUrl + offset + 0 + maxSalary + q_maxSalary + minSalary + q_minSalary + sort + q_orderBy)
       .then(res=>{
-
         dispatch({
           type: QUERY_PAGE,
           payload: res.data
@@ -72,16 +60,14 @@ export const applyQueryParams = (val) =>{
       })
       .then(
         res=>{
-
           dispatch({
             type: SUCCESS_QUERY,
             payload: val
           })
-
         }
       )
       .catch(error=>{
-        throw(error);
+        dispatch(showErrorSnackbar('Invalid Query Parameters'))
       });
   };
 };

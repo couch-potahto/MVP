@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { useDispatch, useSelector, connect } from "react-redux";
-import { clearSnackBar } from "./actions/snackbar";
+import { connect } from "react-redux";
+import { clearSnackBar } from "./actions/snackbarActions";
 import { bindActionCreators } from 'redux';
 import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
 import MuiAlert from '@material-ui/lab/Alert';
-import { Icon } from "@material-ui/core";
 
 
 function Alert(props) {
@@ -28,7 +26,6 @@ function SuccessSnackBar(props) {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return{
     successSnackBarOpen: state.snackbarReducer.successSnackBarOpen,
     successSnackBarMessage: state.snackbarReducer.successSnackBarMessage,
@@ -39,10 +36,5 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators( {clearSnackBar}, dispatch);
-  /*
-    return{
-      applyQueryParams: (val)=>{dispatch(applyQueryParams(val))}
-    }
-    */
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessSnackBar)

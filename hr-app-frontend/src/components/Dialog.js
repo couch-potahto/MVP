@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { applyQueryParams } from './actions/employee';
+import { applyQueryParams } from './actions/employeeActions';
 import { bindActionCreators } from 'redux';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import FilledInput from '@material-ui/core/FilledInput';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -134,20 +131,9 @@ function FormDialog(props) {
 
   );
 }
-/*
-const mapStateToProps = (state)=>{
-    return{
-        loggedIn: state.adminReducer.logged_in,
-        token: state.adminReducer.token
-    }
-}
-*/
+
 const mapDispatchToProps = (dispatch)=>{
   return bindActionCreators( {applyQueryParams}, dispatch);
-  /*
-    return{
-      applyQueryParams: (val)=>{dispatch(applyQueryParams(val))}
-    }
-    */
+
 }
 export default connect(null, mapDispatchToProps)(FormDialog)
