@@ -5,22 +5,18 @@ import React,{Component} from 'react';
 class Upload extends Component {
 
     state = {
-
       // Initially, no file is selected
       selectedFile: null
     };
 
     // On file select (from the pop up)
     onFileChange = event => {
-
       // Update the state
       this.setState({ selectedFile: event.target.files[0] });
-
     };
 
     // On file upload (click the upload button)
     onFileUpload = () => {
-
       // Create an object of formData
       const formData = new FormData();
 
@@ -28,14 +24,8 @@ class Upload extends Component {
       formData.append(
         "file",
         this.state.selectedFile,
-        //this.state.selectedFile.name
       );
-      console.log(formData)
-      // Details of the uploaded file
-      console.log(this.state.selectedFile);
 
-      // Request made to the backend api
-      // Send formData object
       axios.post("http://localhost:8000/users/upload", formData,
        {
         headers: {
@@ -50,8 +40,7 @@ class Upload extends Component {
       });
     };
 
-    // File content to be displayed after
-    // file upload is complete
+
     fileData = () => {
 
       if (this.state.selectedFile) {

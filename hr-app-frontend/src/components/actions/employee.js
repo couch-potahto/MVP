@@ -20,7 +20,7 @@ export const getEmployee = () => async dispatch => {
 export const getEmployee = () =>{
   console.log('LOL')
   return dispatch=>{
-    return axios.get(apiUrl + offset + 0 + maxSalary + 9999999999999 + minSalary + 0 + sort + "id")
+    return axios.get(apiUrl + offset + 0 + maxSalary + 9999999999999 + minSalary + 0 + sort + "name")
       .then(res=>{
         console.log(res)
         dispatch({
