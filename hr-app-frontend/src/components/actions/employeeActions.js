@@ -1,16 +1,12 @@
 import axios from 'axios';
 import { CHANGE_PAGE, GET_EMPLOYEE, QUERY_PAGE, SUCCESS_QUERY } from './types';
 import { showSuccessSnackbar, showErrorSnackbar, clearSnackBar } from './snackbarActions'
+import { apiUrl, offset, maxSalary, minSalary, sort, limit } from '../Constants'
 
-const apiUrl = 'http://localhost:8000/users?limit=30'
-const offset = "&offset="
-const maxSalary = "&maxSalary="
-const minSalary = "&minSalary="
-const sort = "&sort="
 
 export const getEmployee = () =>{
   return dispatch=>{
-    return axios.get(apiUrl + offset + 0 + maxSalary + 9999999999999 + minSalary + 0 + sort + "name")
+    return axios.get(apiUrl + limit + offset + 0 + maxSalary + 9999999999999 + minSalary + 0 + sort + "name")
       .then(res=>{
         console.log(res)
         dispatch({
@@ -29,7 +25,7 @@ export const changePage = (page, min, max, q) =>{
   //page * 30
   console.log(page)
   return(dispatch)=>{
-    return axios.get(apiUrl + offset + ((page-1)*30) + maxSalary + max + minSalary + min + sort + q)
+    return axios.get(apiUrl + limit + offset + ((page-1)*30) + maxSalary + max + minSalary + min + sort + q)
       .then(res=>{
         console.log(res)
         dispatch({
@@ -50,7 +46,7 @@ export const applyQueryParams = (val) =>{
   const q_minSalary = val.minSalary
   const q_maxSalary = val.maxSalary
   return(dispatch)=>{
-    return axios.get(apiUrl + offset + 0 + maxSalary + q_maxSalary + minSalary + q_minSalary + sort + q_orderBy)
+    return axios.get(apiUrl + limit + offset + 0 + maxSalary + q_maxSalary + minSalary + q_minSalary + sort + q_orderBy)
       .then(res=>{
         dispatch({
           type: QUERY_PAGE,

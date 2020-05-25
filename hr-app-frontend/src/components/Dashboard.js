@@ -76,7 +76,6 @@ function Dashboard(props) {
         <Profile />
       </Box>
     </Grid>
-
     <Divider />
       <List>
         {['Function 1', 'Function 2', 'Function 3', 'Function 4'].map((text, index) => (
@@ -108,7 +107,7 @@ function Dashboard(props) {
           >
             <MenuIcon />
           </IconButton>
-          
+
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">

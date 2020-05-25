@@ -1,6 +1,7 @@
 import csv, io
 from django.shortcuts import render
 from django.contrib import messages
+from django.http import HttpResponse
 from rest_framework.settings import api_settings
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import ValidationError
@@ -18,8 +19,9 @@ from django.db import transaction, OperationalError, IntegrityError
 import time
 
 class EmployeeDetailsUpload(APIView):
-	'''assumption:
-		employee_ids assigned smartly. HR collaborates to assign
+	'''
+	assumption:
+	employee_ids assigned with no error and never changes.
 	'''
 
 	def post(self,request,format=None):
@@ -54,6 +56,7 @@ class EmployeeDetailsUpload(APIView):
 								'name': column[2],
 								'salary': column[3]
 							})
+
 		except OperationalError:
 			return Response(status=status.HTTP_503_SERVICE_UNAVAILABLE)
 		except IntegrityError:
@@ -85,3 +88,6 @@ class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 		if page is not None:
 			serializer = self.serializer_class(page, many=True)
 			return self.get_paginated_response(serializer.data)
+
+def get_langauge(request):
+	return HttpResponse(request.LANGUAGE_CODE)
