@@ -15,7 +15,7 @@ from .models import *
 from .validators import *
 from .serializers import *
 from .custom_mixins import *
-from django.db import transaction
+from django.db import transaction, OperationalError, IntegrityError
 import time
 
 class BadData(Exception):
@@ -54,28 +54,35 @@ class EmployeeDetailsUpload(APIView):
 		io_string = io.StringIO(data_set)
 
 		i = 0
-		with transaction.atomic():
-			for column in csv.reader(io_string, delimiter=","):
-				time.sleep(5)
-				print(column)
-				if i == 0:
-					if column != ['id', 'login', 'name', 'salary']:
-						raise SuspiciousOperation('Header Not Found!')
-					i = i+1
-				else:
-					if column[0][0] == "#":
-						continue
-					elif csv_invalid(column):
-						raise SuspiciousOperation('One or more of your rows may have been formatted wrongly!')
+		try:
+			with transaction.atomic():
+				for column in csv.reader(io_string, delimiter=","):
+					time.sleep(5)
+					print(column)
+					if i == 0:
+						if column != ['id', 'login', 'name', 'salary']:
+							raise SuspiciousOperation('Header Not Found!')
+						i = i+1
 					else:
-						obj, created = Employee.objects.update_or_create(
-							employee_id = column[0],
-							defaults={
-							'login': column[1],
-							'name': column[2],
-							'salary': column[3]
-						})
-			return Response(status=status.HTTP_200_OK)
+						if column[0][0] == "#":
+							continue
+						elif csv_invalid(column):
+							raise SuspiciousOperation('One or more of your rows may have been formatted wrongly!')
+						else:
+							obj, created = Employee.objects.update_or_create(
+								employee_id = column[0],
+								defaults={
+								'login': column[1],
+								'name': column[2],
+								'salary': column[3]
+							})
+		except OperationalError:
+			print('LOL')
+			return Response(status=status.HTTP_503_SERVICE_UNAVAILABLE)
+		except IntegrityError:
+			return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+		return Response(status=status.HTTP_200_OK)
 
 class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 	serializer_class = EmployeeSerializer

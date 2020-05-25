@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { getEmployee } from './actions/employeeActions'
 import { showSuccessSnackbar,
          showErrorSnackbar,
          showWarningSnackbar,
@@ -33,6 +34,7 @@ class Upload extends Component {
       })
       .then(res=>{
         this.props.showSuccessSnackbar()
+        this.props.getEmployee()
       })
       .catch(error=>{
         console.log('----------------------------')
@@ -94,7 +96,8 @@ const mapDispatchToProps = (dispatch) => {
     showSuccessSnackbar: () => {dispatch(showSuccessSnackbar('Upload Success'))},
     showErrorSnackbar: (error) => {dispatch(showErrorSnackbar(error))},
     showWarningSnackbar: (warning) => {dispatch(showWarningSnackbar(warning))},
-    clearSnackBar: () => {dispatch(clearSnackBar())}
+    clearSnackBar: () => {dispatch(clearSnackBar())},
+    getEmployee: () => {dispatch(getEmployee())}
   }
 }
 
