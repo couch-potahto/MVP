@@ -1,4 +1,8 @@
-import { SNACKBAR_SUCCESS, SNACKBAR_CLEAR, SNACKBAR_ERROR, SNACKBAR_WARNING } from '../actions/types';
+import { SNACKBAR_SUCCESS,
+         SNACKBAR_CLEAR,
+         SNACKBAR_ERROR,
+         SNACKBAR_WARNING,
+         START_LOADING } from '../actions/types';
 
 const initState = {
   successSnackBarOpen: false,
@@ -6,7 +10,8 @@ const initState = {
   warningSnackBarOpen: false,
   warningSnackBarMessage: null,
   successSnackBarMessage: null,
-  errorSnackBarMessage: null
+  errorSnackBarMessage: null,
+  isLoading: false,
 }
 
 const snackbarReducer=(state=initState, action)=>{
@@ -18,14 +23,16 @@ const snackbarReducer=(state=initState, action)=>{
       return {
         ...state,
         successSnackBarOpen: true,
-        successSnackBarMessage: action.message
+        successSnackBarMessage: action.message,
+        isLoading: false
       };
 
     case SNACKBAR_ERROR:
       return{
         ...state,
         errorSnackBarOpen: true,
-        errorSnackBarMessage: action.message
+        errorSnackBarMessage: action.message,
+        isLoading: false,
       };
 
     case SNACKBAR_WARNING:
@@ -33,7 +40,8 @@ const snackbarReducer=(state=initState, action)=>{
       return{
         ...state,
         warningSnackBarOpen: true,
-        warningSnackBarMessage: action.message
+        warningSnackBarMessage: action.message,
+        isLoading: false
       };
 
     case SNACKBAR_CLEAR:
@@ -41,6 +49,12 @@ const snackbarReducer=(state=initState, action)=>{
         ...state,
         successSnackBarOpen: false,
         errorSnackBarOpen: false
+      };
+
+    case START_LOADING:
+      return{
+        ...state,
+        isLoading: true,
       };
 
     default:

@@ -1,4 +1,8 @@
-import { SNACKBAR_SUCCESS, SNACKBAR_CLEAR, SNACKBAR_ERROR, SNACKBAR_WARNING } from '../actions/types';
+import { SNACKBAR_SUCCESS,
+         SNACKBAR_CLEAR,
+         SNACKBAR_ERROR,
+         SNACKBAR_WARNING,
+         START_LOADING } from '../actions/types';
 
 export const showSuccessSnackbar = (message) => {
   return dispatch => {
@@ -31,6 +35,14 @@ export const clearSnackBar = () => {
   return dispatch => {
     dispatch({
       type: SNACKBAR_CLEAR
+    });
+  };
+};
+
+export const startLoading = () => {
+  return dispatch => {
+    dispatch({
+      type: START_LOADING
     });
   };
 };

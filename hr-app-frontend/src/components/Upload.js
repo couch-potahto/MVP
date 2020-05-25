@@ -9,7 +9,11 @@ import Box from '@material-ui/core/Box';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { connect } from 'react-redux';
 import { getEmployee } from './actions/employeeActions'
-import { showSuccessSnackbar, showErrorSnackbar, showWarningSnackbar, clearSnackBar } from './actions/snackbarActions'
+import { showSuccessSnackbar,
+         showErrorSnackbar,
+         showWarningSnackbar,
+         clearSnackBar,
+         startLoading } from './actions/snackbarActions'
 import { apiUrl } from './Constants'
 
 class Upload extends Component {
@@ -30,7 +34,7 @@ class Upload extends Component {
         "file",
         this.state.selectedFile,
       );
-
+      this.props.startLoading()
       axios.post(apiUrl + "/upload", formData,
        {
         headers: {
@@ -118,7 +122,8 @@ const mapDispatchToProps = (dispatch) => {
     showErrorSnackbar: (error) => {dispatch(showErrorSnackbar(error))},
     showWarningSnackbar: (warning) => {dispatch(showWarningSnackbar(warning))},
     clearSnackBar: () => {dispatch(clearSnackBar())},
-    getEmployee: () => {dispatch(getEmployee())}
+    getEmployee: () => {dispatch(getEmployee())},
+    startLoading: () => {dispatch(startLoading())},
   }
 }
 

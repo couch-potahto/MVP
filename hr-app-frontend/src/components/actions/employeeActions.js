@@ -4,10 +4,10 @@ import { showSuccessSnackbar, showErrorSnackbar, clearSnackBar } from './snackba
 import { apiUrl, offset, maxSalary, minSalary, sort, limit } from '../Constants'
 
 
-export const getEmployee = () =>{
-  return dispatch=>{
+export const getEmployee = () => {
+  return dispatch => {
     return axios.get(apiUrl + limit + offset + 0 + maxSalary + 9999999999999 + minSalary + 0 + sort + "name")
-      .then(res=>{
+      .then(res => {
         console.log(res)
         dispatch({
           type: GET_EMPLOYEE,
@@ -21,12 +21,12 @@ export const getEmployee = () =>{
 };
 
 
-export const changePage = (page, min, max, q) =>{
+export const changePage = (page, min, max, q) => {
   //page * 30
   console.log(page)
-  return(dispatch)=>{
+  return(dispatch) => {
     return axios.get(apiUrl + limit + offset + ((page-1)*30) + maxSalary + max + minSalary + min + sort + q)
-      .then(res=>{
+      .then(res => {
         console.log(res)
         dispatch({
           type:CHANGE_PAGE,
