@@ -52,7 +52,11 @@ function FormDialog(props) {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (prop) => (e) => {
+    setOpen(false);
+  };
+
+  const handleSubmitClose = (prop) => (e) => {
     setOpen(false);
     props.applyQueryParams(values)
   };
@@ -104,8 +108,7 @@ function FormDialog(props) {
               <Select
                 value={values.orderBy}
                 onChange={handleChange('orderBy')}
-                input={<Input id="demo-dialog-native" />}
-              >
+                input={<Input id="demo-dialog-native" />}>
                 <MenuItem value={'id'}>+Id</MenuItem>
                 <MenuItem value={'-id'}>-Id</MenuItem>
                 <MenuItem value={'name'}>+Name</MenuItem>
@@ -119,10 +122,10 @@ function FormDialog(props) {
          </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button id='close' color="primary" onClick={handleClose()}>
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button id='apply' color="primary" onClick={handleSubmitClose()}>
             Apply
           </Button>
         </DialogActions>
