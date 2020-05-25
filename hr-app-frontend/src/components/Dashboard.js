@@ -1,4 +1,6 @@
 import React from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,12 +20,10 @@ import Avatar from '@material-ui/core/Avatar'
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
 import Profile from './Profile'
 import Employees from './Employees'
 import TableTest from './TableTest'
-
+import Upload from './Upload'
 
 const drawerWidth = 240;
 
@@ -90,6 +90,9 @@ function Dashboard(props) {
             <ListItemText primary={text} />
           </ListItem>
         ))}
+        <ListItem>
+          <Upload />
+        </ListItem>
       </List>
     </div>
   );
