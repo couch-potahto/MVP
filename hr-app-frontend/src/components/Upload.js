@@ -46,10 +46,6 @@ class Upload extends Component {
         this.props.getEmployee()
       })
       .catch(error=>{
-        console.log('----------------------------')
-        console.log(error.response)
-        console.log('----------------------------')
-        console.log(error.response.status)
         if(error.response.status=='503'){
           this.props.showWarningSnackbar("Oops, Try Again Later!")
         }

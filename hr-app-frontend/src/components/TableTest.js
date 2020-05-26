@@ -26,18 +26,14 @@ import axios from 'axios'
 class TableTest extends Component{
 
   handleChangePage = (event, page) => {
-    console.log(event)
-    console.log(this.props)
     this.props.changePage(page, this.props.minSalary, this.props.maxSalary, this.props.sort)
   }
 
   viewEmployeeDetail = (id) => {
-    console.log(id)
     this.props.getEmployeeDetail(id)
   }
 
   deleteEmployee = (id) => {
-    console.log(id)
     if (window.confirm('Are you sure you wish to delete this item?')) {
       this.props.deleteEmployee(id, this.props.page, this.props.minSalary, this.props.maxSalary, this.props.sort)
     }
@@ -107,7 +103,6 @@ render(){
 };
 
 const mapStateToProps = (state) => {
-  console.log(state)
 	return {
 		allEmployees: state.employeeReducer.allEmployees,
     count: state.employeeReducer.count,

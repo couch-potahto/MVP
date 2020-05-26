@@ -15,7 +15,6 @@ const detailReducer = (state=initState, action) => {
   switch(action.type){
 
     case GET_DETAIL:
-      console.log('get deets')
       return{
         ...state,
         id: action.payload.id,
@@ -36,7 +35,7 @@ const detailReducer = (state=initState, action) => {
           salary: null,
           isOpen: false
         };
-        
+
     default:
       return state;
   }

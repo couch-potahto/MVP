@@ -92,9 +92,16 @@ class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 			return self.get_paginated_response(serializer.data)
 
 class EmployeeDetailView(APIView):
-	
+
 	def get_object(self, id):
 		return Employee.objects.get(employee_id=id)
+
+	def post(self, request):
+		serializer = EmployeeSerializer(data = request.data['data'])
+		if serializer.is_valid():
+			serializer.save()
+			return Response(data=serializer.data, status=status.HTTP_200_OK)
+		return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def patch(self, request, id):
 		employee = self.get_object(id)
@@ -103,7 +110,7 @@ class EmployeeDetailView(APIView):
 			serializer.save()
 			return Response(status=status.HTTP_200_OK, data=serializer.data)
 		else:
-			return Response(status=status.HTTP_400_BAD_REQUEST)
+			return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def get(self, request, id):
 		try:

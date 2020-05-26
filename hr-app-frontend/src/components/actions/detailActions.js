@@ -10,7 +10,6 @@ export const getEmployeeDetail = (employee_id) => {
   return dispatch => {
     return axios.get(apiUrl + '/' + employee_id)
       .then(res => {
-        console.log(res.data)
         dispatch({
           type: GET_DETAIL,
           payload: res.data
@@ -31,7 +30,6 @@ export const clearEmployeeDetail = () => {
 }
 
 export const updateEmployeeDetail = (employee_id, name, login, salary, page, min, max, q) => {
-  console.log(employee_id)
   return dispatch => {
     return axios.patch(apiUrl + '/' + employee_id, {
       data: {
@@ -42,7 +40,6 @@ export const updateEmployeeDetail = (employee_id, name, login, salary, page, min
         }
     })
     .then(res => {
-      console.log(res.data)
       dispatch(showSuccessSnackbar('Employee Updated Successfully'))
       dispatch(clearEmployeeDetail())
       dispatch(changePage(page, min, max, q))

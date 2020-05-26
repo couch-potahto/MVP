@@ -144,7 +144,6 @@ function DetailDialog(props) {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
 	return {
 		employeeDetail: state.detailReducer,
     allEmployees: state.employeeReducer,

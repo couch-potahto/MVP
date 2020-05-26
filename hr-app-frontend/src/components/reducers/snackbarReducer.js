@@ -19,7 +19,6 @@ const snackbarReducer=(state=initState, action)=>{
   switch(action.type){
 
     case SNACKBAR_SUCCESS:
-      console.log(action)
       return {
         ...state,
         successSnackBarOpen: true,
@@ -36,7 +35,6 @@ const snackbarReducer=(state=initState, action)=>{
       };
 
     case SNACKBAR_WARNING:
-      console.log('LOLOLOLOLOOL')
       return{
         ...state,
         warningSnackBarOpen: true,

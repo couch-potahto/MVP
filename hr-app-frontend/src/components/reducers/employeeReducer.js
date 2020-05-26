@@ -16,7 +16,6 @@ const employeeReducer=(state=initState, action)=>{
   switch(action.type){
 
     case GET_EMPLOYEE:
-      console.log(action.payload)
       return{
         ...state,
         allEmployees: [...action.payload.results],
@@ -45,7 +44,6 @@ const employeeReducer=(state=initState, action)=>{
       };
 
       case SUCCESS_QUERY:
-      console.log(action.payload)
         return{
           ...state,
           minSalary: action.payload.minSalary,

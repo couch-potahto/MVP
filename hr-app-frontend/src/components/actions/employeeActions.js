@@ -8,7 +8,7 @@ export const getEmployee = () => {
   return dispatch => {
     return axios.get(apiUrl + limit + offset + 0 + maxSalary + 9999999999999 + minSalary + 0 + sort + "name")
       .then(res => {
-        console.log(res)
+
         dispatch({
           type: GET_EMPLOYEE,
           payload: res.data
@@ -23,11 +23,9 @@ export const getEmployee = () => {
 
 export const changePage = (page, min, max, q) => {
   //page * 30
-  console.log(page)
   return(dispatch) => {
     return axios.get(apiUrl + limit + offset + ((page-1)*30) + maxSalary + max + minSalary + min + sort + q)
       .then(res => {
-        console.log(res)
         dispatch({
           type:CHANGE_PAGE,
           payload: res.data,
