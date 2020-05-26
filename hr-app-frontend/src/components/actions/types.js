@@ -11,3 +11,4 @@ export const START_LOADING = 'START_LOADING';
 
 export const GET_DETAIL = 'GET_DETAIL';
 export const CLEAR_DETAIL = 'CLEAR_DETAIL';
+export const DELETE_DETAIL = 'DELETE_DETAIL';

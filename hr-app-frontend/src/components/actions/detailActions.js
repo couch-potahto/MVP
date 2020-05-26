@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { showSuccessSnackbar, showErrorSnackbar, clearSnackBar } from './snackbarActions'
-import {  getEmployee } from './employeeActions'
+import {  getEmployee, changePage } from './employeeActions'
 import { apiUrl } from '../Constants'
 import { GET_DETAIL,
-         CLEAR_DETAIL, } from './types';
+         CLEAR_DETAIL,
+         DELETE_EMPLOYEE, } from './types';
 
 export const getEmployeeDetail = (employee_id) => {
   return dispatch => {
@@ -46,8 +47,21 @@ export const updateEmployeeDetail = (employee_id, name, login, salary) => {
       dispatch(clearEmployeeDetail())
       dispatch(getEmployee())
     })
-    .catch(error=>{
+    .catch(error => {
       dispatch(showErrorSnackbar('Fields Invalid'))
     })
+  }
+}
+
+export const deleteEmployee = (employee_id, page, min, max, q) => {
+  return dispatch => {
+    return axios.delete(apiUrl + '/' + employee_id)
+      .then(res => {
+        dispatch(showSuccessSnackbar('Employee Deleted Successfully'))
+        dispatch(changePage(page, min, max, q))
+      })
+      .catch(error => {
+        dispatch(showErrorSnackbar('Something Went Wrong'))
+      })
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { changePage, getEmployee} from './actions/employeeActions';
-import { getEmployeeDetail } from './actions/detailActions';
+import { getEmployeeDetail, deleteEmployee } from './actions/detailActions';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -43,6 +43,11 @@ class TableTest extends Component{
     this.props.getEmployeeDetail(id)
   }
 
+  deleteEmployee = (id) => {
+    console.log(id)
+    this.props.deleteEmployee(id, this.props.page, this.props.minSalary, this.props.maxSalary, this.props.sort)
+  }
+
 
 render(){
   return(
@@ -75,11 +80,11 @@ render(){
             <TableCell>{employee.salary}</TableCell>
             <TableCell>
               <IconButton
-              onClick={() => {this.viewEmployeeDetail(employee.employee_id)}}>
+                onClick={() => {this.viewEmployeeDetail(employee.employee_id)}}>
                 <i class="fa fa-pencil-square-o"></i><VisibilityIcon />
               </IconButton>
               <IconButton
-              //////////////add smth here
+                onClick={() => {this.deleteEmployee(employee.employee_id)}}
                >
                 <i class="fa fa-step-backward"></i>
                 <i class="fa fa-step-forward"></i><DeleteIcon />
@@ -115,7 +120,8 @@ const mapStateToProps = (state) => {
     next: state.employeeReducer.next,
     minSalary: state.employeeReducer.minSalary,
     maxSalary: state.employeeReducer.maxSalary,
-    sort: state.employeeReducer.sort
+    sort: state.employeeReducer.sort,
+    page: state.employeeReducer.page,
 
 	}
 }
@@ -123,7 +129,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return{
     changePage: (page, min, max, q) => {dispatch(changePage(page, min, max, q))},
-    getEmployeeDetail: (employee_id) => {dispatch(getEmployeeDetail(employee_id))}
+    getEmployeeDetail: (employee_id) => {dispatch(getEmployeeDetail(employee_id))},
+    deleteEmployee: (employee_id, page, min, max, q) => {dispatch(deleteEmployee(employee_id, page, min, max, q))},
   }
 }
 
