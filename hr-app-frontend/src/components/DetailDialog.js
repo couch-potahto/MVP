@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { clearEmployeeDetail } from './actions/detailActions';
+import { clearEmployeeDetail, updateEmployeeDetail } from './actions/detailActions';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
@@ -69,10 +69,12 @@ function DetailDialog(props) {
     var name = document.getElementsByName('name')[0].value
     var login = document.getElementsByName('login')[0].value
     var salary = document.getElementsByName('salary')[0].value
+    var employee_id = props.employeeDetail.employee_id
+    console.log(employee_id)
     console.log(name)
     console.log(login)
     console.log(salary)
-    console.log(event.target)
+    props.updateEmployeeDetail(employee_id, name, login, salary)
   };
 
   return (
@@ -155,6 +157,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return{
     clearEmployeeDetail: () => {dispatch(clearEmployeeDetail())},
+    updateEmployeeDetail: (employee_id, name, login, salary) => {dispatch(updateEmployeeDetail(employee_id, name, login, salary))},
   }
 }
 

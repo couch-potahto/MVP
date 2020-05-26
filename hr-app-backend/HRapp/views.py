@@ -16,6 +16,7 @@ from .validators import *
 from .serializers import *
 from .custom_mixins import *
 from django.db import transaction, OperationalError, IntegrityError
+import json
 import time
 
 class EmployeeDetailsUpload(APIView):
@@ -96,11 +97,17 @@ class EmployeeDetailView(APIView):
 
 	def patch(self, request, id):
 		employee = self.get_object(id)
-		serializer = EmployeeSerializer(employee, data=request.data, partial=True)
+		print('-------------------------------------------------')
+		print(employee)
+		print(request.headers)
+		print(request.data)
+		serializer = EmployeeSerializer(employee, data=request.data['data'], partial=True)
 		if serializer.is_valid():
 			serializer.save()
-			return Response(status=status.HTTP_204_NO_CONTENT, data=serializer.data)
-
+			return Response(status=status.HTTP_200_OK, data=serializer.data)
+		else:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+			
 	def get(self, request, id):
 		try:
 			employee = self.get_object(id)
