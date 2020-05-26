@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { GET_DETAIL } from './types';
 import { showSuccessSnackbar, showErrorSnackbar, clearSnackBar } from './snackbarActions'
 import { apiUrl } from '../Constants'
+import { GET_DETAIL,
+         CLEAR_DETAIL, } from './types';
 
 export const getEmployeeDetail = (employee_id) => {
   return dispatch => {
@@ -16,5 +17,13 @@ export const getEmployeeDetail = (employee_id) => {
       .catch(error=>{
         dispatch(showErrorSnackbar('Employee Does Not Exist'))
       })
+  }
+}
+
+export const clearEmployeeDetail = () => {
+  return dispatch => {
+    dispatch({
+      type: CLEAR_DETAIL,
+    })
   }
 }

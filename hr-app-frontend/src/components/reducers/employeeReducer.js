@@ -7,7 +7,8 @@ const initState = {
   minSalary: 0,
   maxSalary: 9999999999999,
   sort: "name",
-  count: 0
+  count: 0,
+  page: 1
 }
 
 const employeeReducer=(state=initState, action)=>{
@@ -30,7 +31,8 @@ const employeeReducer=(state=initState, action)=>{
           allEmployees: [...action.payload.results],
           previous: action.payload.previous,
           next: action.payload.next,
-          count: Math.ceil(action.payload.count/30)
+          count: Math.ceil(action.payload.count/30),
+          page: action.page,
       };
 
       case QUERY_PAGE:

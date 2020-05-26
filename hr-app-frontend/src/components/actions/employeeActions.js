@@ -30,7 +30,8 @@ export const changePage = (page, min, max, q) => {
         console.log(res)
         dispatch({
           type:CHANGE_PAGE,
-          payload: res.data
+          payload: res.data,
+          page: page
         })
       })
       .catch(error=>{

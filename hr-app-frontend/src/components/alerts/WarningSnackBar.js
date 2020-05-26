@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { clearSnackBar } from "./actions/snackbarActions";
+import { clearSnackBar } from "../actions/snackbarActions";
 import { bindActionCreators } from 'redux';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
