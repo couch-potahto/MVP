@@ -1,13 +1,12 @@
 from django.test import TestCase
 from rest_framework.test import APITestCase
-from .models import Employee
+from HRapp.models import Employee
 from rest_framework import status
 import os
 # Create your tests here.
 BASE_PATH = os.path.dirname(os.path.realpath(__file__))
-
+'''
 class FileUploadTests(TestCase):
-    '''
     def set_up(self):
         self.client = django.test.client.Client()
     # - Can upload correct CSV file
