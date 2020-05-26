@@ -92,22 +92,19 @@ class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 			return self.get_paginated_response(serializer.data)
 
 class EmployeeDetailView(APIView):
+	
 	def get_object(self, id):
 		return Employee.objects.get(employee_id=id)
 
 	def patch(self, request, id):
 		employee = self.get_object(id)
-		print('-------------------------------------------------')
-		print(employee)
-		print(request.headers)
-		print(request.data)
 		serializer = EmployeeSerializer(employee, data=request.data['data'], partial=True)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(status=status.HTTP_200_OK, data=serializer.data)
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
-			
+
 	def get(self, request, id):
 		try:
 			employee = self.get_object(id)
@@ -115,6 +112,14 @@ class EmployeeDetailView(APIView):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 		serializer = EmployeeSerializer(employee)
 		return Response(serializer.data)
+
+	def delete(self, request, id):
+		try:
+			employee = self.get_object(id)
+		except Employee.DoesNotExist:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		employee.delete()
+		return Response(status=status.HTTP_200_OK)
 
 
 def get_langauge(request):
