@@ -10,6 +10,9 @@ sudo apt-get update
 sudo apt-get install python3.7
 sudo apt install python3-pip
 sudo apt install nodejs
+pip3 install django
+pip3 install djangorestframework
+
 ```
 
 ### Setting up the Backend
