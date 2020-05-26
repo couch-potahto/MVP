@@ -26,6 +26,7 @@ class EmployeeDetailsUpload(APIView):
 	'''
 
 	def post(self,request,format=None):
+		print(request.FILES)
 		csv_file = request.FILES['file']
 
 		if not csv_file.name.endswith(".csv"):
@@ -42,7 +43,7 @@ class EmployeeDetailsUpload(APIView):
 					print(column)
 					if i == 0:
 						if column != ['id', 'login', 'name', 'salary']:
-							raise SuspiciousOperation('Header Not Found!')
+							raise SuspiciousOperation('Header Incorrect!')
 						i = i+1
 					else:
 						if column[0][0] == "#":
