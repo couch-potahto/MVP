@@ -63,5 +63,7 @@ After the neccessary data has been uploaded to the server, do refresh the fronte
 ### User Story 3
 CRUD operations are all exposed through ```http://localhost:8000/users/<employee_id>```. It is important to note that ```employee_id``` is not the same value as ```primary key```.
 
+For the PATCH request, the fields to be changed must be encapsulated in a 'data' field with the JSON payload as such: ```{"data": {"login": "login_to_change" ... }}```
+
 
 
