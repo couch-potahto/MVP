@@ -26,7 +26,6 @@ class EmployeeDetailsUpload(APIView):
 	'''
 
 	def post(self,request,format=None):
-		print(request.FILES)
 		csv_file = request.FILES['file']
 
 		if not csv_file.name.endswith(".csv"):
@@ -39,8 +38,6 @@ class EmployeeDetailsUpload(APIView):
 		try:
 			with transaction.atomic():
 				for column in csv.reader(io_string, delimiter=","):
-					#time.sleep(5)
-					print(column)
 					if i == 0:
 						if column != ['id', 'login', 'name', 'salary']:
 							raise SuspiciousOperation('Header Incorrect!')
@@ -74,7 +71,6 @@ class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 	def get(self, request):
 		resolve_id = {'id': 'employee_id', '-id': '-employee_id'}
 		params = request.query_params
-		print(params)
 		if query_request_invalid(params):
 			raise ValidationError()
 		try:
@@ -106,6 +102,12 @@ class EmployeeDetailView(APIView):
 
 	def patch(self, request, id):
 		employee = self.get_object(id)
+		if 'salary' in request.data['data']:
+			try:
+				if float(request.data['data']['salary']) < 0:
+					return Response(status=status.HTTP_400_BAD_REQUEST)
+			except:
+				return Response(status=status.HTTP_400_BAD_REQUEST)
 		serializer = EmployeeSerializer(employee, data=request.data['data'], partial=True)
 		if serializer.is_valid():
 			serializer.save()
