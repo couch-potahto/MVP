@@ -30,7 +30,7 @@ export const clearEmployeeDetail = () => {
   }
 }
 
-export const updateEmployeeDetail = (employee_id, name, login, salary) => {
+export const updateEmployeeDetail = (employee_id, name, login, salary, page, min, max, q) => {
   console.log(employee_id)
   return dispatch => {
     return axios.patch(apiUrl + '/' + employee_id, {
@@ -45,7 +45,7 @@ export const updateEmployeeDetail = (employee_id, name, login, salary) => {
       console.log(res.data)
       dispatch(showSuccessSnackbar('Employee Updated Successfully'))
       dispatch(clearEmployeeDetail())
-      dispatch(getEmployee())
+      dispatch(changePage(page, min, max, q))
     })
     .catch(error => {
       dispatch(showErrorSnackbar('Fields Invalid'))

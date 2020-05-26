@@ -70,11 +70,7 @@ function DetailDialog(props) {
     var login = document.getElementsByName('login')[0].value
     var salary = document.getElementsByName('salary')[0].value
     var employee_id = props.employeeDetail.employee_id
-    console.log(employee_id)
-    console.log(name)
-    console.log(login)
-    console.log(salary)
-    props.updateEmployeeDetail(employee_id, name, login, salary)
+    props.updateEmployeeDetail(employee_id, name, login, salary, props.allEmployees.page, props.allEmployees.minSalary, props.allEmployees.maxSalary, props.allEmployees.sort)
   };
 
   return (
@@ -151,13 +147,14 @@ const mapStateToProps = (state) => {
   console.log(state)
 	return {
 		employeeDetail: state.detailReducer,
+    allEmployees: state.employeeReducer,
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
   return{
     clearEmployeeDetail: () => {dispatch(clearEmployeeDetail())},
-    updateEmployeeDetail: (employee_id, name, login, salary) => {dispatch(updateEmployeeDetail(employee_id, name, login, salary))},
+    updateEmployeeDetail: (employee_id, name, login, salary, page, min, max, sort) => {dispatch(updateEmployeeDetail(employee_id, name, login, salary, page, min, max, sort))},
   }
 }
 
