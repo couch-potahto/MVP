@@ -36,7 +36,7 @@ python3 manage.py runserver
 The backend can be accessed via ```http://localhost:8000```.
 
 ### Setting up the Frontend
-Change directory into ```hr-app-front``` and install the requirements.
+Change directory into ```hr-app-frontend``` and install the requirements.
 
 ```bash
 npm install
