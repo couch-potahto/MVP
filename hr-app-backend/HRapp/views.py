@@ -38,6 +38,7 @@ class EmployeeDetailsUpload(APIView):
 		try:
 			with transaction.atomic():
 				for column in csv.reader(io_string, delimiter=","):
+					time.sleep(3)
 					if i == 0:
 						if column != ['id', 'login', 'name', 'salary']:
 							raise SuspiciousOperation('Header Incorrect!')
@@ -68,6 +69,15 @@ class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 	serializer_class = EmployeeSerializer
 	pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
 
+	def post(self, request, format=None):
+		print(request.data)
+		serializer = EmployeeSerializer(data = request.data['data'])
+
+		if serializer.is_valid():
+			serializer.save()
+			return Response(data=serializer.data, status=status.HTTP_200_OK)
+		return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 	def get(self, request):
 		resolve_id = {'id': 'employee_id', '-id': '-employee_id'}
 		params = request.query_params
@@ -93,13 +103,6 @@ class EmployeeDetailView(APIView):
 	def get_object(self, id):
 		return Employee.objects.get(employee_id=id)
 
-	def post(self, request):
-		serializer = EmployeeSerializer(data = request.data['data'])
-		if serializer.is_valid():
-			serializer.save()
-			return Response(data=serializer.data, status=status.HTTP_200_OK)
-		return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 	def patch(self, request, id):
 		employee = self.get_object(id)
 		if 'salary' in request.data['data']:
@@ -108,6 +111,7 @@ class EmployeeDetailView(APIView):
 					return Response(status=status.HTTP_400_BAD_REQUEST)
 			except:
 				return Response(status=status.HTTP_400_BAD_REQUEST)
+
 		serializer = EmployeeSerializer(employee, data=request.data['data'], partial=True)
 		if serializer.is_valid():
 			serializer.save()
