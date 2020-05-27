@@ -41,6 +41,12 @@ class CRUDTest(TestCase):
         e = Employee.objects.get(employee_id = self.alpha.employee_id)
         self.assertEqual(e.salary, 1000)
 
+    def test_patch_employee_detail_salary_additional_decimal(self):
+        response = self.client.patch(
+            reverse('employee_detail_view', args=["e00001"]), {"data":{"salary":"1000.123"}},content_type='application/json')
+        e = Employee.objects.get(employee_id = self.alpha.employee_id)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_patch_employee_detail_salary_negative(self):
         response = self.client.patch(
             reverse('employee_detail_view', args=["e00001"]), {"data":{"salary":"-1000"}},content_type='application/json')
@@ -62,7 +68,34 @@ class CRUDTest(TestCase):
         e = Employee.objects.get(employee_id = self.alpha.employee_id)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_patch_employee_detail_salary_invalid_field(self):
+        response = self.client.patch(
+            reverse('employee_detail_view', args=["e00001"]), {"data":{"invalid_field":"1000.123"}},content_type='application/json')
+        e = Employee.objects.get(employee_id = self.alpha.employee_id)
+        self.assertEqual(hasattr(e, 'invalid_field'), False)
+
     def test_delete_employee(self):
         response = self.client.delete(reverse('employee_detail_view', args=["e00001"]))
         e = Employee.objects.get(employee_id = "e00001")
-        self.assertEqual(e, e.DoesNotExist)
+        self.assertEqual(response.status_code, e.DoesNotExist)
+
+    def test_post_employee(self):
+        response = self.client.post(reverse('employee_list'), {"data":{"employee_id":"e00005", "login": "Echo 5", "name": "Echo", "salary": "12345"}}, content_type='application/json')
+        e = Employee.objects.get(employee_id = "e00005")
+        self.assertEqual(e.name, "Echo")
+
+    def test_post_employee_duplicate_login(self):
+        response = self.client.post(reverse('employee_list'), {"data":{"employee_id":"e00005", "login": "alpha_1", "name": "Echo", "salary": "12345"}}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_post_employee_duplicate_id(self):
+        response = self.client.post(reverse('employee_list'), {"data":{"employee_id":"e00001", "login": "echo_5", "name": "Echo", "salary": "12345"}}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_post_employee_negative_salary(self):
+        response = self.client.post(reverse('employee_list'), {"data":{"employee_id":"e00001", "login": "echo_5", "name": "Echo", "salary": "-12345"}}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_post_employee_invalid_salary(self):
+        response = self.client.post(reverse('employee_list'), {"data":{"employee_id":"e00001", "login": "echo_5", "name": "Echo", "salary": "1235.1234"}}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
