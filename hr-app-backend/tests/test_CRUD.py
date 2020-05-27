@@ -5,6 +5,7 @@ from HRapp.models import Employee
 from HRapp.serializers import EmployeeSerializer
 from rest_framework import status
 from django.urls import reverse
+import json
 import os
 
 class CRUDTest(TestCase):
@@ -33,3 +34,35 @@ class CRUDTest(TestCase):
         response = self.client.get(
             reverse('employee_detail_view', args=["fake_employee"]))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_patch_employee_detail_salary(self):
+        response = self.client.patch(
+            reverse('employee_detail_view', args=["e00001"]), {"data":{"salary":"1000"}},content_type='application/json')
+        e = Employee.objects.get(employee_id = self.alpha.employee_id)
+        self.assertEqual(e.salary, 1000)
+
+    def test_patch_employee_detail_salary_negative(self):
+        response = self.client.patch(
+            reverse('employee_detail_view', args=["e00001"]), {"data":{"salary":"-1000"}},content_type='application/json')
+        e = Employee.objects.get(employee_id = self.alpha.employee_id)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_patch_employee_detail_name(self):
+        response = self.client.patch(reverse('employee_detail_view', args=["e00001"]), {"data":{"name":"Not Alpha"}},content_type='application/json')
+        e = Employee.objects.get(employee_id = self.alpha.employee_id)
+        self.assertEqual(e.name, "Not Alpha")
+
+    def test_patch_employee_detail_login(self):
+        response = self.client.patch(reverse('employee_detail_view', args=["e00001"]), {"data":{"login":"alpha_12345"}},content_type='application/json')
+        e = Employee.objects.get(employee_id = self.alpha.employee_id)
+        self.assertEqual(e.login, "alpha_12345")
+
+    def test_patch_employee_detail_login_duplicate(self):
+        response = self.client.patch(reverse('employee_detail_view', args=["e00001"]), {"data":{"login":"bravo_2"}},content_type='application/json')
+        e = Employee.objects.get(employee_id = self.alpha.employee_id)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_delete_employee(self):
+        response = self.client.delete(reverse('employee_detail_view', args=["e00001"]))
+        e = Employee.objects.get(employee_id = "e00001")
+        self.assertEqual(e, e.DoesNotExist)
