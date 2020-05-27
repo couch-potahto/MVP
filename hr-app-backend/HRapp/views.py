@@ -70,13 +70,16 @@ class PaginatedEmployeeRecordsView(APIView, MyPaginationMixin):
 	pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
 
 	def post(self, request, format=None):
-		print(request.data)
-		serializer = EmployeeSerializer(data = request.data['data'])
+		salary_is_valid = salary_validator(request)
+		if salary_is_valid == True:
+			serializer = EmployeeSerializer(data = request.data['data'])
 
-		if serializer.is_valid():
-			serializer.save()
-			return Response(data=serializer.data, status=status.HTTP_200_OK)
-		return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+			if serializer.is_valid():
+				serializer.save()
+				return Response(data=serializer.data, status=status.HTTP_200_OK)
+			return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		else:
+			return salary_is_valid
 
 	def get(self, request):
 		resolve_id = {'id': 'employee_id', '-id': '-employee_id'}
@@ -105,12 +108,9 @@ class EmployeeDetailView(APIView):
 
 	def patch(self, request, id):
 		employee = self.get_object(id)
-		if 'salary' in request.data['data']:
-			try:
-				if float(request.data['data']['salary']) < 0:
-					return Response(status=status.HTTP_400_BAD_REQUEST)
-			except:
-				return Response(status=status.HTTP_400_BAD_REQUEST)
+		salary_is_valid = salary_validator(request)
+		if salary_is_valid != True:
+			return salary_is_valid
 
 		serializer = EmployeeSerializer(employee, data=request.data['data'], partial=True)
 		if serializer.is_valid():

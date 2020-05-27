@@ -24,3 +24,12 @@ def query_request_invalid(query_d):
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
     return False
+
+def salary_validator(request):
+    if 'salary' in request.data['data']:
+        try:
+            if float(request.data['data']['salary']) < 0:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    return True
