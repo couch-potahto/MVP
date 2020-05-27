@@ -38,7 +38,6 @@ class EmployeeDetailsUpload(APIView):
 		try:
 			with transaction.atomic():
 				for column in csv.reader(io_string, delimiter=","):
-					time.sleep(3)
 					if i == 0:
 						if column != ['id', 'login', 'name', 'salary']:
 							raise SuspiciousOperation('Header Incorrect!')
