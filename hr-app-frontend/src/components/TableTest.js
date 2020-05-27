@@ -46,9 +46,9 @@ render(){
 
     <TableContainer component={Paper}>
     <Toolbar>
-      <Typography>
+      <Title>
         Employees
-      </Typography>
+      </Title>
       <Grid container alignItems="flex-start" justify="flex-end" direction="row">
          <Dialog />
       </Grid>
