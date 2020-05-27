@@ -58,12 +58,14 @@ This section serves to describe the API endpoints for the various actions implem
 The upload function is exposed through ```http://localhost:8000/users/upload```. You can choose to use the upload button available on the frontend, or post to the API directly via a tool like Postman. The database does not support concurrency so if a 2nd csv file is uploaded while a 1st upload is taking place, an error will be returned.
 
 ### User Story 2
-After the neccessary data has been uploaded to the server, do refresh the frontend to see the updated display. The API for this user story is exposed through ```http://localhost:8000/users?limit=<integer>&offset=<integer>&minSalary=<integer>&maxSalary=<integer>&sort=<name, -name, id, -id, login, -login, salary, -salary>``` and will display a paginated response depending on the value in the ```limit``` query paramater. On the frontend, the limit is initially fixed at 30, selects all employees, and sorts by name. Any parameter that is missing from the URL will result in a HTTP 400 response.
+After the neccessary data has been uploaded to the server, do refresh the frontend to see the updated display. The API for this user story is exposed through ```http://localhost:8000/users?limit=<integer>&offset=<integer>&minSalary=<integer>&maxSalary=<integer>&sort=<name, -name, id, -id, login, -login, salary, -salary>``` and will display a paginated response depending on the value in the ```limit``` query paramater. On the frontend, the limit is initially fixed at 30, selects all employees, and sorts by name. Any parameter that is missing from the URL will result in a HTTP 400 response. Do note that the ```+``` sign is implicit for the ```sort``` parameter so there is no need to specify it. 
+
+There is no particular order for the sort parameters to be in, only that they must all be present in the URL.
 
 ### User Story 3
-CRUD operations are all exposed through ```http://localhost:8000/users/<employee_id>```. It is important to note that ```employee_id``` is not the same value as ```primary key```.
+CRUD operations are all exposed through ```http://localhost:8000/users/<employee_id>```. It is important to note that ```employee_id``` is not the same value as the ```primary key``` used in the database. POST operations are done through ```http://localhost:8000/users``` but do note that even if the API endpoint exists, there is currently no functionality for creating a single user on the frontend.
 
-For the PATCH request, the fields to be changed must be encapsulated in a 'data' field with the JSON payload as such: ```{"data": {"login": "login_to_change" ... }}```
+For the PATCH and POST requests, the fields to be changed must be encapsulated in a 'data' field within the JSON payload as such: ```{"data": {"login": "login_to_change" ... }}```. All employee fields must be present for POST requests.
 
 
 
