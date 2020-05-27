@@ -46,7 +46,8 @@ const snackbarReducer=(state=initState, action)=>{
       return{
         ...state,
         successSnackBarOpen: false,
-        errorSnackBarOpen: false
+        errorSnackBarOpen: false,
+        warningSnackBarOpen: false
       };
 
     case START_LOADING:

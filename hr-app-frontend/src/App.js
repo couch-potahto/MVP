@@ -11,19 +11,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 
 class App extends Component {
-/*
-  componentDidMount(){
-    axios.get(baseUrl + '/language')
-      .then(res=>{
-        if(res.data != 'en'){
-          console.log(res.data)
-          alert("We've detected that your language preferences are set to "
-           +  res.data.toUpperCase() +
-           " Unfortunately, we have no support for that language.")
-        }
-      })
-  }
-*/
+
   render(){
     return (
        <BrowserRouter>

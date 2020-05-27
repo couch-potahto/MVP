@@ -47,7 +47,7 @@ class Upload extends Component {
       })
       .catch(error=>{
         if(error.response.status=='503'){
-          this.props.showWarningSnackbar("Oops, Try Again Later!")
+          this.props.showWarningSnackbar("Oops, Different Upload Taking Place! Try Again Later")
         }
         else{
           this.props.showErrorSnackbar("File Type/Content Invalid")
