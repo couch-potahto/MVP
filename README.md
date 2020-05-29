@@ -19,7 +19,7 @@ pip3 install djangorestframework
 Change directory into ```hr-app-backend``` and install the requirements.
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 Then, set up the database with 
