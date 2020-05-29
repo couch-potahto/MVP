@@ -12,6 +12,7 @@ sudo apt install python3-pip
 sudo apt install nodejs
 pip3 install django
 pip3 install djangorestframework
+pip3 install django-cors-headers
 
 ```
 
