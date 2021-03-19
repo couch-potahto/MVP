@@ -17,7 +17,7 @@ distro==1.4.0
 distro-info===0.23ubuntu1
 Django==3.0.6
 django-cors-headers==3.3.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 entrypoints==0.3
 httplib2==0.14.0
 hyperlink==19.0.0
